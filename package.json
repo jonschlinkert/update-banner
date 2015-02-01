@@ -1,0 +1,45 @@
+{
+  "name": "update-banner",
+  "description": "Add or update a banner in a string.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/update-banner",
+  "author": {
+    "name": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonschlinkert/update-banner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/update-banner/issues"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/jonschlinkert/update-banner/blob/master/LICENSE-MIT"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": ["index.js"],
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "keywords": [
+    "banner",
+    "copyright",
+    "update"
+  ],
+  "dependencies": {
+    "load-pkg": "^1.0.0",
+    "lodash": "^2.4.1",
+    "parse-author": "^0.1.0",
+    "parse-authors": "^0.2.2",
+    "strip-banner": "^0.1.1",
+    "update-copyright": "^0.1.0"
+  }
+}
