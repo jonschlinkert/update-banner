@@ -1,8 +1,8 @@
 /*!
  * update-banner <https://github.com/jonschlinkert/update-banner>
  *
- * Copyright (c) 2015 Jon Schlinkert, contributors.
- * Licensed under the MIT license.
+ * Copyright (c) 2015, Jon Schlinkert.
+ * Licensed under the MIT License.
  */
 
 'use strict';
@@ -62,9 +62,8 @@ var defaults = {
 
 function process(str, context) {
   var orig = str, i;
-
   while ((i = str.indexOf('<%')) !== -1 && str.indexOf('%>', i + 1) !== -1) {
-    str = _.template(str, context);
+    str = _.template(str)(context);
     if (str === orig) { break; }
     orig = str;
   }
@@ -89,6 +88,9 @@ function homepage(ctx) {
 function repository(ctx) {
   if (typeof ctx.repository === 'object' && ctx.repository.url) {
     return ctx.repository.url;
+  }
+  if (typeof ctx.repository === 'string') {
+    return 'https://github.com/' + ctx.repository;
   }
   return null;
 }
