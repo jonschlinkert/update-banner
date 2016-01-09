@@ -43,21 +43,26 @@ function updateBanner(str, tmpl, context) {
   return str;
 }
 
+/*!
+ * foo-bar <https://github.com/jonschlinkert/foo-bar>
+ *
+ * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Licensed under the MIT license.
+ */
+
 var template = [
   '/*!',
-  ' * <%= lead %>',
+  ' * <%= name %> <<%= repository.url %>>',
   ' *',
-  ' * <%= statement.copyright %>',
-  ' * <%= statement.license %>',
+  ' * <%= copyright %>',
+  ' * <%= license %>',
   ' */\n\n',
 ].join('\n');
 
 var defaults = {
   url: '<%= homepage %>',
-  lead: '<%= name %> <<%= url %>>',
-  statement: {
-    license: 'Licensed under the MIT License.',
-  }
+  copyright: 'Licensed under the MIT License.',
+  license: 'Licensed under the MIT License.',
 };
 
 function process(str, context) {
