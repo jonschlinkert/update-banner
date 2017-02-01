@@ -1,7 +1,7 @@
 {
   "name": "update-banner",
   "description": "Update the banner comment in a string of javascript.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "homepage": "https://github.com/jonschlinkert/update-banner",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/update-banner",
