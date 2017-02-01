@@ -1,19 +1,18 @@
 {
   "name": "update-banner",
-  "description": "Add or update a banner in a string.",
+  "description": "Update the banner comment in a string of javascript.",
   "version": "0.1.1",
   "homepage": "https://github.com/jonschlinkert/update-banner",
-  "author": {
-    "name": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert"
-  },
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/update-banner",
   "bugs": {
     "url": "https://github.com/jonschlinkert/update-banner/issues"
   },
   "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "lib",
+    "utils.js"
   ],
   "main": "index.js",
   "engines": {
@@ -23,19 +22,60 @@
     "test": "mocha"
   },
   "dependencies": {
-    "load-pkg": "^1.0.0",
-    "lodash": "^3.2.0",
-    "parse-author": "^0.1.0",
-    "parse-authors": "^0.2.2",
-    "strip-banner": "^0.1.1",
-    "update-copyright": "^0.1.0"
+    "engine-base": "^0.1.2",
+    "extend-shallow": "^2.0.1",
+    "extract-banner": "^0.1.2",
+    "isobject": "^3.0.0",
+    "lazy-cache": "^2.0.2",
+    "parse-author": "^1.0.0",
+    "strip-banner": "^0.2.0",
+    "update-copyright": "^0.2.4"
   },
   "devDependencies": {
-    "mocha": "*"
+    "gulp-format-md": "^0.1.11",
+    "mocha": "^3.2.0"
   },
   "keywords": [
     "banner",
     "copyright",
-    "update"
-  ]
+    "fix",
+    "lint",
+    "linter",
+    "maintain",
+    "maintainance",
+    "plugin",
+    "plugins",
+    "up-to-date",
+    "update",
+    "update-plugin",
+    "update-updater",
+    "updateplugin",
+    "updater",
+    "upkeep"
+  ],
+  "verb": {
+    "run": true,
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "related": {
+      "list": [
+        "extract-banner",
+        "strip-banner",
+        "update-copyright"
+      ]
+    },
+    "reflinks": [
+      "update-copyright",
+      "verb"
+    ],
+    "lint": {
+      "reflinks": true
+    }
+  }
 }

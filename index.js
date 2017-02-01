@@ -7,95 +7,74 @@
 
 'use strict';
 
-var copyright = require('update-copyright');
-var authors = require('parse-authors');
-var author = require('parse-author');
-var config = require('./package');
-var strip = require('strip-banner');
-var pkg = require('load-pkg');
-var _ = require('lodash');
+var path = require('path');
+var template = require('./lib/template');
+var utils = require('./utils');
 
-module.exports = updateBanner;
-
-function updateBanner(str, tmpl, context) {
-  var banner = str.replace(strip(str), '');
-  if (typeof tmpl !== 'string') {
-    context = tmpl;
-    tmpl = template;
+module.exports = function(content, options) {
+  if (typeof content !== 'string') {
+    options = content;
+    content = '';
   }
 
-  var ctx = _.extend(defaults, pkg, context);
-  if (typeof ctx.author === 'string') {
-    ctx.author = author(ctx.author).name;
-  } else if (typeof ctx.author === 'object') {
-    ctx.author = ctx.author.name;
-  } else {
-    ctx.author = pkg.author;
+  var banner = utils.extract(toString(content)).trim();
+  var opts = utils.extend({template: template}, options);
+  var newBanner = render(opts.template, createContext(banner, opts)).trim();
+  if (!banner) {
+    return newBanner + '\n\n' + content.replace(/^\s+/, '');
   }
-
-  var parsed = copyright.parse(str, ctx);
-  ctx.statement = ctx.statement || {};
-  ctx.statement.copyright = parsed.updated;
-  ctx.homepage = homepage(ctx) || repository(ctx);
-
-  var res = process(tmpl, ctx);
-  str = str.replace(banner, res);
-  return str;
-}
-
-/*!
- * foo-bar <https://github.com/jonschlinkert/foo-bar>
- *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
- * Licensed under the MIT license.
- */
-
-var template = [
-  '/*!',
-  ' * <%= name %> <<%= repository.url %>>',
-  ' *',
-  ' * <%= copyright %>',
-  ' * <%= license %>',
-  ' */\n\n',
-].join('\n');
-
-var defaults = {
-  url: '<%= homepage %>',
-  copyright: 'Licensed under the MIT License.',
-  license: 'Licensed under the MIT License.',
+  return content.replace(banner, newBanner);
 };
 
-function process(str, context) {
+function createContext(banner, options) {
+  var pkg = options.config || require(path.resolve(process.cwd(), 'package.json'));
+  var ctx = utils.extend({}, pkg);
+  ctx.statementOnly = true;
+  ctx.repository = repository(ctx);
+  ctx.homepage = homepage(ctx);
+  ctx.author = author(ctx);
+  ctx.copyright = utils.copyright(banner, ctx);
+  return ctx;
+}
+
+function toString(str) {
+  return str ? (String(str).trim() + '\n') : '';
+}
+
+function render(str, context) {
   var orig = str, i;
   while ((i = str.indexOf('<%')) !== -1 && str.indexOf('%>', i + 1) !== -1) {
-    str = _.template(str)(context);
+    str = utils.engine.renderSync(str, context);
     if (str === orig) { break; }
     orig = str;
   }
   return str;
 }
 
-/**
- * TODO: look for an existing package to do
- * this part, or add logic if one doesn't
- * work for this.
- */
+function author(ctx) {
+  if (typeof ctx.author === 'string') {
+    return utils.parseAuthor(ctx.author);
+  }
+  if (utils.isObject(ctx.author)) {
+    return ctx.author.name;
+  }
+}
 
 function homepage(ctx) {
-  if (ctx.homepage) {
-    if (/github/.test(ctx.homepage)) {
-      return ctx.homepage;
-    }
+  if (typeof ctx.homepage === 'string' && /github/.test(ctx.homepage)) {
+    return ctx.homepage;
   }
-  return null;
+  if (typeof ctx.repository === 'string') {
+    return ctx.repository;
+  }
 }
 
 function repository(ctx) {
-  if (typeof ctx.repository === 'object' && ctx.repository.url) {
-    return ctx.repository.url;
+  var repo = ctx.repository;
+  if (utils.isObject(repo) && repo.url) {
+    return repo.url;
   }
-  if (typeof ctx.repository === 'string') {
-    return 'https://github.com/' + ctx.repository;
+  if (typeof repo === 'string') {
+    return 'https://github.com/' + repo;
   }
-  return null;
 }

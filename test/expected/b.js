@@ -1,11 +1,9 @@
 /*!
  * update-banner <https://github.com/jonschlinkert/update-banner>
  *
- * Copyright (c) 2015, Jon Schlinkert.
- * Licensed under the MIT License.
+ * Copyright © 2017, Jon Schlinkert.
+ * Released under the MIT License.
  */
-
-'use strict';
 
 function foo () {
   return;
